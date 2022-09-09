@@ -24,9 +24,9 @@
 					//var_dump($products);
 						echo '<tr>';
 							echo '<td>' . $products[0]['proDescription'] . '</td>';
-							echo '<td>' . $products[0]['proPrice'] . '</td>';
+							echo '<td>CHF ' . number_format($products[0]['proPrice'], 2) . '</td>';
 							echo '<td>' . $products['quantity'] . '</td>';
-							echo '<td>' . $products['quantity'] * $products[0]['proPrice'] . '</td>';
+							echo '<td>CHF ' . number_format($products['quantity'] * $products[0]['proPrice'], 2) . '</td>';
 							echo '<td>';
 								echo '<a class="btn btn-default" href="index.php?controller=basket&action=formUpdate&id=' . $products[0]['idProduct'] . '"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
 								echo '<a onclick="return confirm(\'Etes-vous sûr ? \')" class="btn btn-default" href="index.php?controller=basket&action=remove&id=' . $products[0]['idProduct'] . '"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>';
@@ -39,7 +39,7 @@
 						<th></th>
 						<th></th>
 						<th></th>
-						<th><?= $total ?></th>
+						<th>CHF <?= number_format($total, 2) ?></th>
 						<th></th>
 					</tr>
 				</tbody>

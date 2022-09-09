@@ -152,21 +152,17 @@ include_once 'classes/ShopRepository.php';
     }
 
     /**
-     * Display for to update one product
+     * Display for to delivery products
      *
      * @return string
      */
     private function formDeliveryAction(){
-
-        $shopRepository = new ShopRepository();
-        $product = $shopRepository->findOne($_GET['id']);
-
-        $catRepository = new CategoryRepository();
-        $categories = $catRepository->findAll();
-
-        $id = $_GET['id'];
-
-        $view = file_get_contents('view/page/admin/formUpdate.php');
+        /*$total = 0;
+        foreach ($_SESSION['basket'] as $products) {
+            $total += $products['quantity'] * $products[0]['proPrice'];
+        }
+        $_SESSION['sumTotal'] = $total;*/
+        $view = file_get_contents('view/page/basket/formDelivery.php');
 
 
         ob_start();
@@ -174,6 +170,105 @@ include_once 'classes/ShopRepository.php';
         $content = ob_get_clean();
 
         return $content;
+    }
+
+    /**
+     * Display for to paid products
+     *
+     * @return string
+     */
+    private function formPaidAction(){
+
+        if(isset($_POST['deliveryMethod'])){
+
+            $_SESSION['delivery'] = $_POST['deliveryMethod'];
+            $view = file_get_contents('view/page/basket/formPaid.php');
+    
+    
+            ob_start();
+            eval('?>' . $view);
+            $content = ob_get_clean();
+    
+            return $content;
+        } else{
+
+            $view = file_get_contents('view/page/basket/formDelivery.php');
+    
+    
+            ob_start();
+            eval('?>' . $view);
+            $content = ob_get_clean();
+    
+            return $content;
+        }
+    }
+
+    /**
+     * Display for address
+     *
+     * @return string
+     */
+    private function formAddressAction(){
+
+        if(isset($_POST['paidMethod'])){
+            
+            $_SESSION['paid'] = $_POST['paidMethod'];
+            $view = file_get_contents('view/page/basket/formAddress.php');
+    
+    
+            ob_start();
+            eval('?>' . $view);
+            $content = ob_get_clean();
+    
+            return $content;
+        } else{
+
+            $view = file_get_contents('view/page/basket/formPaid.php');
+    
+    
+            ob_start();
+            eval('?>' . $view);
+            $content = ob_get_clean();
+    
+            return $content;
+        }
+    }
+
+    /**
+     * Display for send order
+     *
+     * @return string
+     */
+    private function sendOrderAction(){
+
+        $error = true;
+        foreach ($_POST as $key => $value) {
+            if ($value == "") {
+                $error = false;
+            }
+        };
+        if($error){
+
+            $_SESSION['address'] = $_POST;
+            $view = file_get_contents('view/page/basket/sendOrder.php');
+    
+    
+            ob_start();
+            eval('?>' . $view);
+            $content = ob_get_clean();
+    
+            return $content;
+        } else{
+
+            $view = file_get_contents('view/page/basket/formAddress.php');
+    
+    
+            ob_start();
+            eval('?>' . $view);
+            $content = ob_get_clean();
+    
+            return $content;
+        }
     }
  }
 ?>
