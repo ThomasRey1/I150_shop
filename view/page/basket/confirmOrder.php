@@ -1,5 +1,5 @@
 <div class="container">
-	<h2>Récapitulatif</h2>
+	<h2>Confirmation de commande - Merci de votre achat: Num. <?= $_SESSION['paid'] ?></h2>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<!-- info perso -->
@@ -131,7 +131,6 @@
 					</tr>
 				</tbody>
 			</table>
-			<a class="btn btn-default" href="index.php?controller=basket&action=confirmOrder">Envoyer la commande</a>
 		</div>
 	</div>
 </div>

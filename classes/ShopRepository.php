@@ -46,4 +46,24 @@ class ShopRepository implements Entity {
 
         return $query;
     }
+
+    /**
+     * Subtract a product
+     *
+     * @param $idProduct
+     *
+     * @return array
+     */
+    public function subtractProductAction($idProduct, $quantity)
+    {
+
+        $table = 't_product';
+        $columns = "proQuantity = proQuantity - $quantity";
+        $where = "idProduct = " . $idProduct;
+
+        $request = new DataBaseQuery();
+        $query = $request->update($table, $columns, $where);
+
+        return $query;
+    }
 }

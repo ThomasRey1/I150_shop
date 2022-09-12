@@ -5,6 +5,8 @@
  * Shop
  */
 include_once 'classes/ShopRepository.php';
+include_once 'classes/DeliveryRepository.php';
+include_once 'classes/PaidRepository.php';
 
  class BasketController extends Controller{
     /**
@@ -157,11 +159,10 @@ include_once 'classes/ShopRepository.php';
      * @return string
      */
     private function formDeliveryAction(){
-        /*$total = 0;
-        foreach ($_SESSION['basket'] as $products) {
-            $total += $products['quantity'] * $products[0]['proPrice'];
-        }
-        $_SESSION['sumTotal'] = $total;*/
+        
+        $deliveryRepository = new DeliveryRepository();
+        $deliveries = $deliveryRepository->findAll();
+
         $view = file_get_contents('view/page/basket/formDelivery.php');
 
 
@@ -178,8 +179,10 @@ include_once 'classes/ShopRepository.php';
      * @return string
      */
     private function formPaidAction(){
-
         if(isset($_POST['deliveryMethod'])){
+        
+            $paidRepository = new PaidRepository();
+            $paids = $paidRepository->findAll();
 
             $_SESSION['delivery'] = $_POST['deliveryMethod'];
             $view = file_get_contents('view/page/basket/formPaid.php');
@@ -191,6 +194,9 @@ include_once 'classes/ShopRepository.php';
     
             return $content;
         } else{
+        
+            $deliveryRepository = new DeliveryRepository();
+            $deliveries = $deliveryRepository->findAll();
 
             $view = file_get_contents('view/page/basket/formDelivery.php');
     
@@ -223,6 +229,9 @@ include_once 'classes/ShopRepository.php';
             return $content;
         } else{
 
+            $paidRepository = new PaidRepository();
+            $paids = $paidRepository->findAll();
+
             $view = file_get_contents('view/page/basket/formPaid.php');
     
     
@@ -240,14 +249,22 @@ include_once 'classes/ShopRepository.php';
      * @return string
      */
     private function sendOrderAction(){
-
         $error = true;
         foreach ($_POST as $key => $value) {
-            if ($value == "") {
-                $error = false;
+            if ($key == 'number' && $value == "") {
+            }
+            else {
+                if ($value == "") {
+                    $error = false;
+                }
             }
         };
         if($error){
+
+            $deliveryRepository = new DeliveryRepository();
+            $delivery = $deliveryRepository->findOne($_SESSION["delivery"]);
+            $paidRepository = new PaidRepository();
+            $paid = $paidRepository->findOne($_SESSION["paid"]);
 
             $_SESSION['address'] = $_POST;
             $view = file_get_contents('view/page/basket/sendOrder.php');
@@ -269,6 +286,48 @@ include_once 'classes/ShopRepository.php';
     
             return $content;
         }
+    }
+
+    /**
+     * Display for send order
+     *
+     * @return string
+     */
+    private function confirmOrderAction(){
+        var_dump($_SESSION);
+        $deliveryRepository = new DeliveryRepository();
+        $delivery = $deliveryRepository->findOne($_SESSION["delivery"]);
+        $paidRepository = new PaidRepository();
+        $paid = $paidRepository->findOne($_SESSION["paid"]);
+        $shopRepository = new ShopRepository();
+
+        $notError = true;
+
+        foreach ($_SESSION['basket'] as $productsCustomer) {
+            $product = $shopRepository->findOne($productsCustomer[0]['idProduct']);
+            if ($product[0]['proQuantity'] < $productsCustomer['quantity']) {
+                $notError = false;
+            }
+        }
+
+        var_dump($notError);
+        if($notError){
+            foreach ($_SESSION['basket'] as $productsCustomer) {
+                $shopRepository->subtractProductAction($productsCustomer[0]['idProduct'], $productsCustomer['quantity']);
+            }
+        }
+        else{
+            
+        }
+
+        $view = file_get_contents('view/page/basket/confirmOrder.php');
+
+
+        ob_start();
+        eval('?>' . $view);
+        $content = ob_get_clean();
+
+        return $content;
     }
  }
 ?>
