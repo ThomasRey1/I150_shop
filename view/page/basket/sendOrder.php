@@ -95,7 +95,8 @@
                         echo '</tr>';
 						$total += $paid[0]['paiExtra'];
 					}elseif ($paid[0]['paiType'] == "%") {
-						$credit = $paid[0]['paiExtra'] * $total / 100;
+						//obtien le credit au 5eme
+						$credit = round(($paid[0]['paiExtra'] * $total / 100) * 2, 1) / 2;
                         echo '<tr>';
                             echo '<td>' . $_SESSION['paid'] . ' (+ ' . $paid[0]['paiExtra'] . '%)</td>';
 							echo '<td></td>';
@@ -128,6 +129,7 @@
 						<th></th>
 						<th></th>
 						<th>CHF <?= number_format($total, 2) ?></th>
+						<?php $_SESSION['total'] = number_format($total, 2) ?>
 					</tr>
 				</tbody>
 			</table>

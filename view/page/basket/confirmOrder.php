@@ -1,5 +1,5 @@
 <div class="container">
-	<h2>Confirmation de commande - Merci de votre achat: Num. <?= $_SESSION['paid'] ?></h2>
+	<h2>Confirmation de commande - Merci de votre achat: Num. <?= $order[0]['idOrder'] ?></h2>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<!-- info perso -->

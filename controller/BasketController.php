@@ -7,6 +7,7 @@
 include_once 'classes/ShopRepository.php';
 include_once 'classes/DeliveryRepository.php';
 include_once 'classes/PaidRepository.php';
+include_once 'classes/OrderRepository.php';
 
  class BasketController extends Controller{
     /**
@@ -180,33 +181,40 @@ include_once 'classes/PaidRepository.php';
      */
     private function formPaidAction(){
         if(isset($_POST['deliveryMethod'])){
-        
-            $paidRepository = new PaidRepository();
-            $paids = $paidRepository->findAll();
 
-            $_SESSION['delivery'] = $_POST['deliveryMethod'];
-            $view = file_get_contents('view/page/basket/formPaid.php');
-    
-    
-            ob_start();
-            eval('?>' . $view);
-            $content = ob_get_clean();
-    
-            return $content;
-        } else{
-        
             $deliveryRepository = new DeliveryRepository();
             $deliveries = $deliveryRepository->findAll();
 
-            $view = file_get_contents('view/page/basket/formDelivery.php');
+            foreach($deliveries as $delivery){
+                if($delivery['delMethod'] == $_POST['deliveryMethod'])
+                {
+                    $paidRepository = new PaidRepository();
+                    $paids = $paidRepository->findAll();
+    
+                    $_SESSION['delivery'] = $_POST['deliveryMethod'];
+                    $view = file_get_contents('view/page/basket/formPaid.php');
     
     
-            ob_start();
-            eval('?>' . $view);
-            $content = ob_get_clean();
+                    ob_start();
+                    eval('?>' . $view);
+                    $content = ob_get_clean();
     
-            return $content;
+                    return $content;
+                }
+            }
         }
+        
+        $deliveryRepository = new DeliveryRepository();
+        $deliveries = $deliveryRepository->findAll();
+
+        $view = file_get_contents('view/page/basket/formDelivery.php');
+
+
+        ob_start();
+        eval('?>' . $view);
+        $content = ob_get_clean();
+
+        return $content;
     }
 
     /**
@@ -215,32 +223,33 @@ include_once 'classes/PaidRepository.php';
      * @return string
      */
     private function formAddressAction(){
-
+        
+        $paidRepository = new PaidRepository();
+        $paids = $paidRepository->findAll();
         if(isset($_POST['paidMethod'])){
-            
-            $_SESSION['paid'] = $_POST['paidMethod'];
-            $view = file_get_contents('view/page/basket/formAddress.php');
-    
-    
-            ob_start();
-            eval('?>' . $view);
-            $content = ob_get_clean();
-    
-            return $content;
-        } else{
+            foreach ($paids as $paid) {
+                if ($paid['paiMethod'] == $_POST['paidMethod']) {
+                    $_SESSION['paid'] = $_POST['paidMethod'];
+                    $view = file_get_contents('view/page/basket/formAddress.php');
 
-            $paidRepository = new PaidRepository();
-            $paids = $paidRepository->findAll();
 
-            $view = file_get_contents('view/page/basket/formPaid.php');
-    
-    
-            ob_start();
-            eval('?>' . $view);
-            $content = ob_get_clean();
-    
-            return $content;
+                    ob_start();
+                    eval('?>' . $view);
+                    $content = ob_get_clean();
+
+                    return $content;
+                }
+            }
         }
+
+        $view = file_get_contents('view/page/basket/formPaid.php');
+
+
+        ob_start();
+        eval('?>' . $view);
+        $content = ob_get_clean();
+
+        return $content;
     }
 
     /**
@@ -294,40 +303,53 @@ include_once 'classes/PaidRepository.php';
      * @return string
      */
     private function confirmOrderAction(){
-        var_dump($_SESSION);
-        $deliveryRepository = new DeliveryRepository();
-        $delivery = $deliveryRepository->findOne($_SESSION["delivery"]);
-        $paidRepository = new PaidRepository();
-        $paid = $paidRepository->findOne($_SESSION["paid"]);
         $shopRepository = new ShopRepository();
+        $products = $shopRepository->findAll();
+        if ($_SESSION != NULL) {
+            $deliveryRepository = new DeliveryRepository();
+            $delivery = $deliveryRepository->findOne($_SESSION["delivery"]);
+            $paidRepository = new PaidRepository();
+            $paid = $paidRepository->findOne($_SESSION["paid"]);
 
-        $notError = true;
-
-        foreach ($_SESSION['basket'] as $productsCustomer) {
-            $product = $shopRepository->findOne($productsCustomer[0]['idProduct']);
-            if ($product[0]['proQuantity'] < $productsCustomer['quantity']) {
-                $notError = false;
-            }
-        }
-
-        var_dump($notError);
-        if($notError){
+            $notError = true;
             foreach ($_SESSION['basket'] as $productsCustomer) {
-                $shopRepository->subtractProductAction($productsCustomer[0]['idProduct'], $productsCustomer['quantity']);
+                $product = $shopRepository->findOne($productsCustomer[0]['idProduct']);
+                if ($product[0]['proQuantity'] < $productsCustomer['quantity']) {
+                    $notError = false;
+                }
+            }
+            
+            //var_dump($notError);
+            if($notError){
+                $orderRepository = new OrderRepository();
+                foreach ($_SESSION['basket'] as $productsCustomer) {
+                    $shopRepository->subtractProductAction($productsCustomer[0]['idProduct'], $productsCustomer['quantity']);
+                }
+                $date = date("Y-m-d");
+                $orderRepository->insert($_SESSION['total'],$date,$_SESSION['address']['name'],$_SESSION['address']['firstName'],$_SESSION['address']['street'],$_SESSION['address']['locality'],$delivery[0]['idDelivery'],$paid[0]['idPaid']);
+                $order = $orderRepository->findOne();
+                
+                //session_destroy();
+                
+                
+                $view = file_get_contents('view/page/basket/confirmOrder.php');
+                
+                
+                ob_start();
+                eval('?>' . $view);
+                $content = ob_get_clean();
+                
+                return $content;
             }
         }
-        else{
+            $view = file_get_contents('view/page/shop/list.php');
             
-        }
-
-        $view = file_get_contents('view/page/basket/confirmOrder.php');
-
-
-        ob_start();
-        eval('?>' . $view);
-        $content = ob_get_clean();
-
-        return $content;
+            
+            ob_start();
+            eval('?>' . $view);
+            $content = ob_get_clean();
+            
+            return $content;
     }
  }
 ?>
