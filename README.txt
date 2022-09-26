@@ -1,0 +1,1 @@
+la base de donnée doit déjà être créé sous le nom "db_shop"
