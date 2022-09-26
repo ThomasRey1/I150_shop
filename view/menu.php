@@ -3,6 +3,11 @@
         <li><a href="index.php?controller=shop&action=list">Shop</a></li>
         <li><a href="index.php?controller=basket&action=list">Votre panier</a></li>
         <?php
+        if(isset($_SESSION['right']) && ($_SESSION['right'] == 'admin' || $_SESSION['right'] == 'customer')){
+        ?>
+            <li><a href="index.php?controller=profil&action=detail">Profil</a></li>
+        <?php
+        }
         if(isset($_SESSION['right']) && $_SESSION['right'] == 'admin'){
         ?>
             <li><a href="index.php?controller=admin&action=index">Gestion des articles</a></li>

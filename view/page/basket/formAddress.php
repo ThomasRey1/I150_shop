@@ -21,7 +21,7 @@
 					<input name="street" type="text" class="form-control" id="addressStreet" placeholder="Rue" pattern="([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*"/>
 				</div>
                 <div class="form-group">
-					<input name="number" type="number" class="form-control" id="addressNumber" placeholder="N°"/>
+					<input name="number" type="text" class="form-control" id="addressNumber" placeholder="N°" pattern="[0-9]{1,4}[a-z]?"/>
 				</div>
                 <div class="form-group">
 					<input name="npa" type="text" class="form-control" id="addressNPA" placeholder="NPA" pattern="[0-9]{4}"/>

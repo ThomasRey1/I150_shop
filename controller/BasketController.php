@@ -8,6 +8,7 @@ include_once 'classes/ShopRepository.php';
 include_once 'classes/DeliveryRepository.php';
 include_once 'classes/PaidRepository.php';
 include_once 'classes/OrderRepository.php';
+include_once 'classes/OrderProductRepository.php';
 
  class BasketController extends Controller{
     /**
@@ -322,14 +323,16 @@ include_once 'classes/OrderRepository.php';
             //var_dump($notError);
             if($notError){
                 $orderRepository = new OrderRepository();
+                $orderProductRepository = new OrderProductRepository;
+                $date = date("Y-m-d");
+                $orderRepository->insert($_SESSION['total'],$date,$_SESSION['address']['name'],$_SESSION['address']['firstName'],$_SESSION['address']['street'],$_SESSION['address']['number'],$_SESSION['address']['locality'],$_SESSION['address']['npa'],$delivery[0]['idDelivery'],$paid[0]['idPaid']);
+                $order = $orderRepository->findOne();
                 foreach ($_SESSION['basket'] as $productsCustomer) {
+                    $orderProductRepository->insert($order[0]['idOrder'],$productsCustomer[0]['idProduct'], $productsCustomer['quantity']);
                     $shopRepository->subtractProductAction($productsCustomer[0]['idProduct'], $productsCustomer['quantity']);
                 }
-                $date = date("Y-m-d");
-                $orderRepository->insert($_SESSION['total'],$date,$_SESSION['address']['name'],$_SESSION['address']['firstName'],$_SESSION['address']['street'],$_SESSION['address']['locality'],$delivery[0]['idDelivery'],$paid[0]['idPaid']);
-                $order = $orderRepository->findOne();
                 
-                //session_destroy();
+                session_destroy();
                 
                 
                 $view = file_get_contents('view/page/basket/confirmOrder.php');

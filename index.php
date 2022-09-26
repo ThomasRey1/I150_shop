@@ -21,6 +21,7 @@ include 'controller/HomeController.php';
 include 'controller/LoginController.php';
 include 'controller/ShopController.php';
 include 'controller/BasketController.php';
+include 'controller/ProfilController.php';
 
 date_default_timezone_set('Europe/Zurich');
 
@@ -66,6 +67,9 @@ class MainController {
                 break;
             case 'basket':
                 $link = new BasketController();
+                break;
+            case 'profil':
+                $link = new ProfilController();
                 break;
             default:
                 $link = new HomeController();

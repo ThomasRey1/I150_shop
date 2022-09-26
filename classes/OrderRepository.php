@@ -59,12 +59,12 @@ class OrderRepository implements Entity {
      *
      * @return bool|string
      */
-    public function insert($total, $date, $name, $firstname, $street, $locality, $idDelivery, $idPaid) {
+    public function insert($total, $date, $name, $firstname, $street, $number, $locality, $npa, $idDelivery, $idPaid) {
 
         $request = new DataBaseQuery();
         $table = 't_order';
-        $columns = '(idOrder, ordTotal, ordDate, ordName, ordFirstname, ordStreet, ordLocality, fkDelivery, fkPaid)';
-        $values = "(NULL, $total, '$date', '$name', '$firstname', '$street', '$locality', $idDelivery, $idPaid)";
+        $columns = '(idOrder, ordTotal, ordDate, ordName, ordFirstname, ordStreet, ordStreetNb, ordLocality, ordNpa, fkDelivery, fkPaid)';
+        $values = "(NULL, $total, '$date', '$name', '$firstname', '$street', '$number', '$locality', $npa, $idDelivery, $idPaid)";
 
         return $request->insert($table, $columns, $values);
     }
