@@ -1,6 +1,6 @@
 <div class="container">
 	<h2>Adresse d'envoi</h2>
-	<!-- Three columns of text below the carousel -->
+	<!-- Form for the personal info -->
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<form method="post" enctype="multipart/form-data" action="index.php?controller=basket&action=sendOrder">

@@ -51,6 +51,7 @@ class ShopRepository implements Entity {
      * Subtract a product
      *
      * @param $idProduct
+     * @param $quantity
      *
      * @return array
      */

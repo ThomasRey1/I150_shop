@@ -24,7 +24,7 @@ include_once 'classes/OrderProductRepository.php';
     }
 
     /**
-     * Display List Action
+     * Display detail Action
      *
      * @return string
      */

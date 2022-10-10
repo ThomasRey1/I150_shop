@@ -1,7 +1,7 @@
 <?php
 /**
  * ETML
- * Date: 01.06.2017
+ * Date: 12.09.2022
  * Shop
  */
 
@@ -30,8 +30,6 @@ class OrderRepository implements Entity {
     /**
      * Find One entry
      *
-     * @param $login
-     *
      * @return array
      */
     public function findOne() {
@@ -50,12 +48,16 @@ class OrderRepository implements Entity {
     /**
      * Insert
      *
+     * @param $total
+     * @param $date
      * @param $name
-     * @param $description
-     * @param $price
-     * @param $quantity
-     * @param $file
-     * @param $idCategory
+     * @param $firstname
+     * @param $street
+     * @param $number
+     * @param $locality
+     * @param $npa
+     * @param $idDelivery
+     * @param $idPaid
      *
      * @return bool|string
      */

@@ -299,7 +299,7 @@ include_once 'classes/OrderProductRepository.php';
     }
 
     /**
-     * Display for send order
+     * Display for confirmation order
      *
      * @return string
      */

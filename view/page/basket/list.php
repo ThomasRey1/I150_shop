@@ -1,6 +1,6 @@
 <div class="container">
 	<h2>Votre panier</h2>
-	<!-- Three columns of text below the carousel -->
+	<!-- list of all product in the basket -->
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<?php 

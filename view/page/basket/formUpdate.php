@@ -1,7 +1,7 @@
 <div class="container">
 
 	<h2>Ajouter un article</h2>
-	<!-- Three columns of text below the carousel -->
+	<!-- modify the quantity of a product -->
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<form method="post" enctype="multipart/form-data" action="index.php?controller=basket&action=update&id=<?php echo $id; ?>">

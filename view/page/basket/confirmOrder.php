@@ -2,7 +2,7 @@
 	<h2>Confirmation de commande - Merci de votre achat: Num. <?= $order[0]['idOrder'] ?></h2>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<!-- info perso -->
+			<!-- personal information -->
             <table class="table">
 				<thead>
 					<tr>
@@ -70,21 +70,6 @@
 							echo '<td>CHF ' . number_format($total, 2) .'</td>';
                         echo '</tr>';
 					}
-                    /*if ($_SESSION['delivery'] == 'Par la poste') {
-                        echo '<tr>';
-							echo '<td>' . $_SESSION['delivery'] . '</td>';
-							echo '<td></td>';
-							echo '<td></td>';
-							echo '<td>CHF 7.95</td>';
-                        echo '</tr>';
-                        $total += 7.95;
-                        echo '<tr>';
-							echo '<td>Total</td>';
-							echo '<td></td>';
-							echo '<td></td>';
-							echo '<td>CHF ' . number_format($total, 2) .'</td>';
-                        echo '</tr>';
-                    }*/
 					# Moyen de payement
 					if ($paid[0]['paiType'] == "CHF") {
 						echo '<tr>';
@@ -104,24 +89,6 @@
                         echo '</tr>';
                         $total += number_format($credit, 2);
 					}
-                    /*if ($_SESSION['paid'] == 'Sur facture') {
-                        echo '<tr>';
-							echo '<td>' . $_SESSION['paid'] . '</td>';
-							echo '<td></td>';
-							echo '<td></td>';
-							echo '<td>CHF 2</td>';
-                        echo '</tr>';
-                        $total += $paid['paiExtra'];
-                    }else if($_SESSION['paid'] == 'Carte de crédit'){
-                        $credit = 2 * $total / 100;
-                        echo '<tr>';
-                            echo '<td>' . $_SESSION['paid'] . ' (+ 2%)</td>';
-							echo '<td></td>';
-							echo '<td></td>';
-							echo '<td>CHF ' . number_format($credit, 2) . '</td>';
-                        echo '</tr>';
-                        $total += number_format($credit, 2);
-                    }*/
 				?>
 				<tr>
 						<th>Total à payer</th>
